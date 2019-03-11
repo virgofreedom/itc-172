@@ -1,5 +1,6 @@
 from django.test import TestCase
 from .models import Resource, Meeting, MeetingMinute, Event
+from django.urls import reverse
 
 # Create your tests here.
 #model test
@@ -35,3 +36,14 @@ class EventTest(TestCase):
 
     def test_tablename(self):
         self.assertEqual(str(Event._meta.db_table), 'event')
+# test view
+class TestIndex(TestCase):
+    
+    def test_view_url_accessible_by_name(self):
+        response = self.client.get(reverse('index'))
+        self.assertEqual(response.status_code, 200)
+        
+    def test_view_uses_correct_template(self):
+        response = self.client.get(reverse('index'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'club/index.html')
